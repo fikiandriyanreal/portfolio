@@ -248,4 +248,17 @@
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+
+  // Process timeline: draw in, then loop a runner along the line while visible
+  (function () {
+    var tl = document.querySelector('.timeline');
+    if (!tl || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('tl-armed');
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) tl.classList.add('run');
+        tl.classList.toggle('paused', !e.isIntersecting);
+      });
+    }, { threshold: 0.3 }).observe(tl);
+  })();
 })();
