@@ -253,3 +253,6 @@ a.svc-foot:hover{color:var(--blue)}
 .tour-list li strong{font-weight:600;display:inline-block;margin-bottom:4px}
 .tour-seen strong{font-weight:600}
 #what-i-do .svc-foot{margin-top:48px}
+
+/* mobile section line spacing (r17) */
+@media(max-width:640px){#services,#process{padding-top:50px}}
