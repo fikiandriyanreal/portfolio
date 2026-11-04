@@ -21,7 +21,7 @@
   }
 
   // 2. Reveal on scroll (staggered inside groups)
-  var targets = document.querySelectorAll('.sec-title, .row, .about-text, .item, .cta-title, .cta-row, .foot');
+  var targets = document.querySelectorAll('.sec-title, .sec-lede, .case, .row, .about-text, .item, .svc-foot, .cta-title, .cta-row, .foot');
   targets.forEach(function (el) { el.setAttribute('data-reveal', ''); });
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
@@ -65,7 +65,7 @@
     bubble.setAttribute('aria-hidden', 'true');
     bubble.textContent = 'Visit';
     document.body.appendChild(bubble);
-    document.querySelectorAll('.row').forEach(function (r) {
+    document.querySelectorAll('.row, .case-img').forEach(function (r) {
       r.addEventListener('mouseenter', function () { bubbleOn = true; bubble.classList.add('on'); });
       r.addEventListener('mouseleave', function () { bubbleOn = false; bubble.classList.remove('on'); });
     });
