@@ -39,6 +39,24 @@
     targets.forEach(function (el) { el.classList.add('in'); });
   }
 
+  // Section transitions: a rule draws in at the top of each section
+  var secs = document.querySelectorAll('#work, #about, #services');
+  secs.forEach(function (s) { s.classList.add('sline'); });
+  if ('IntersectionObserver' in window && !reduce) {
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); so.unobserve(e.target); } });
+    }, { threshold: 0, rootMargin: '0px 0px -20% 0px' });
+    secs.forEach(function (s) { so.observe(s); });
+  } else {
+    secs.forEach(function (s) { s.classList.add('in'); });
+  }
+  // Safety: anything still hidden is shown once the reader reaches the bottom
+  window.addEventListener('scroll', function () {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6) {
+      document.querySelectorAll('[data-reveal]:not(.in)').forEach(function (el) { el.classList.add('in'); });
+    }
+  }, { passive: true });
+
   if (reduce) return;
 
   // 3. Marquee speeds up with scroll and flips with direction
@@ -58,18 +76,47 @@
   }
 
   // 5. Cursor bubble on work rows
-  var bubble = null, bx = 0, by = 0, tx = 0, ty = 0, bubbleOn = false;
+  var peek = null, px = 0, py = 0, peekOn = false, bubble = null, bx = 0, by = 0, tx = 0, ty = 0, bubbleOn = false;
   if (fine) {
     bubble = document.createElement('div');
     bubble.className = 'bubble';
     bubble.setAttribute('aria-hidden', 'true');
     bubble.textContent = 'Visit';
     document.body.appendChild(bubble);
-    document.querySelectorAll('.row, .case-img').forEach(function (r) {
+    document.querySelectorAll('.case-img').forEach(function (r) {
       r.addEventListener('mouseenter', function () { bubbleOn = true; bubble.classList.add('on'); });
       r.addEventListener('mouseleave', function () { bubbleOn = false; bubble.classList.remove('on'); });
     });
     window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+
+    // Project list: a preview follows the cursor, with a View circle
+    var rowEls = document.querySelectorAll('.row');
+    if (rowEls.length) {
+      peek = document.createElement('div');
+      peek.className = 'peek';
+      peek.setAttribute('aria-hidden', 'true');
+      rowEls.forEach(function (r) {
+        var t = r.querySelector('.thumb');
+        if (!t) return;
+        var im = document.createElement('img');
+        im.src = t.currentSrc || t.src; im.alt = '';
+        peek.appendChild(im);
+        r._peekImg = im;
+      });
+      var view = document.createElement('span');
+      view.className = 'peek-view'; view.textContent = 'View';
+      peek.appendChild(view);
+      document.body.appendChild(peek);
+      root.classList.add('peek-on');
+      rowEls.forEach(function (r) {
+        r.addEventListener('mouseenter', function () {
+          peek.querySelectorAll('img').forEach(function (i) { i.classList.remove('active'); });
+          if (r._peekImg) r._peekImg.classList.add('active');
+          peekOn = true; peek.classList.add('on');
+        });
+        r.addEventListener('mouseleave', function () { peekOn = false; peek.classList.remove('on'); });
+      });
+    }
   }
 
   // 6. Magnetic buttons
@@ -97,6 +144,7 @@
     tick(); setInterval(tick, 30000);
   }
 
+  var heroInner = document.querySelector('.hero-meta');
   var heroH = function () { return document.querySelector('.hero').offsetHeight; };
   function frame() {
     var y = window.scrollY;
@@ -117,6 +165,15 @@
         var py = -y * depth[i] * 1.6;
         img.style.transform = 'translate3d(' + (cx * 24 * (i + 1) / 2) + 'px,' + (py + cy * 14) + 'px,0) ' + base;
       });
+    }
+    if (peek) {
+      px += (tx - px) * 0.14; py += (ty - py) * 0.14;
+      peek.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0) translate(-50%,-50%) scale(' + (peekOn ? 1 : 0.85) + ')';
+    }
+    if (y < heroH()) {
+      var hp = Math.min(1, y / heroH());
+      heroInner.style.transform = 'translate3d(0,' + (hp * 40) + 'px,0)';
+      heroInner.style.opacity = String(1 - hp * 0.55);
     }
     if (bubble) {
       bx += (tx - bx) * 0.18; by += (ty - by) * 0.18;
