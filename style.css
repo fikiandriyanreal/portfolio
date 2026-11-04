@@ -23,7 +23,12 @@ a{color:inherit;text-decoration:none}
 .role .arr{font-style:normal}
 @media(max-width:640px){.hero-meta{margin-top:28px;flex-direction:column-reverse;gap:14px}.role{font-size:18px}.lede{font-size:16px}}
 .name{position:relative;z-index:2;font-size:clamp(72px,14.5vw,212px);line-height:.92;letter-spacing:-.02em;margin-top:24px;padding-bottom:8px}
-.name .dash{font-weight:300}
+.name .dots{display:inline-flex;align-items:flex-end;gap:.09em;margin-left:.1em;padding-bottom:.06em}
+.name .dots span{width:.13em;height:.13em;border-radius:50%;background:#fff;opacity:.25;animation:dotpulse 1.4s ease-in-out infinite}
+.name .dots span:nth-child(2){animation-delay:.2s}
+.name .dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotpulse{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-.07em)}}
+@media(prefers-reduced-motion:reduce){.name .dots span{animation:none;opacity:1}}
 .fan{position:relative;height:420px;margin-top:clamp(40px,5vw,72px);z-index:1}
 .fan img{position:absolute;width:min(46%,560px);border-radius:14px;box-shadow:0 30px 80px rgba(7,16,50,.45);border:6px solid #fff}
 .fan .f1{left:0;top:60px;transform:rotate(-5deg)}
@@ -195,3 +200,6 @@ body.menu-open{overflow:hidden}
 .about-side{display:flex;flex-direction:column;gap:28px}
 .portrait{width:100%;max-width:480px;height:auto;border-radius:14px;display:block}
 @media(max-width:760px){.portrait{max-width:340px}}
+/* footer avatar (r9) */
+.cta-avatar{display:inline-block;width:.78em;height:.78em;border-radius:50%;overflow:hidden;margin-right:.22em;vertical-align:-.04em}
+.cta-avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 8%;display:block}

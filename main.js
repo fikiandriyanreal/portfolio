@@ -8,11 +8,11 @@
   // 1. Hero name: lines rise from a mask on load
   var name = document.querySelector('.name');
   if (name && !reduce) {
-    var dash = name.querySelector('.dash');
+    var dots = name.querySelector('.dots');
     name.setAttribute('aria-label', 'Fiki Andriyan');
     name.innerHTML =
       '<span class="line" aria-hidden="true"><span>Fiki</span></span>' +
-      '<span class="line" aria-hidden="true"><span>Andriyan ' + (dash ? '<span class="dash">&mdash;</span>' : '') + '</span></span>';
+      '<span class="line" aria-hidden="true"><span>Andriyan' + (dots ? '<span class="dots"><span></span><span></span><span></span></span>' : '') + '</span></span>';
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { root.classList.add('loaded'); });
     });
