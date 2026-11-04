@@ -57,6 +57,44 @@
     }
   }, { passive: true });
 
+
+  // 2b. Sticky hamburger: a round menu button appears once the hero nav scrolls away
+  var menuBtn = document.querySelector('.menu-btn');
+  var menuEl = document.getElementById('site-menu');
+  if (menuBtn && menuEl) {
+    var menuOpen = false;
+    var onScrollMenu = function () {
+      document.body.classList.toggle('scrolled', window.scrollY > 100);
+    };
+    window.addEventListener('scroll', onScrollMenu, { passive: true });
+    onScrollMenu();
+    var setMenu = function (open) {
+      menuOpen = open;
+      document.body.classList.toggle('menu-open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menuEl.setAttribute('aria-hidden', String(!open));
+    };
+    menuBtn.addEventListener('click', function () { setMenu(!menuOpen); });
+    menuEl.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { setMenu(false); });
+    });
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menuOpen) setMenu(false);
+    });
+    // Magnetic pull on the button's inner mark (fine pointer only)
+    if (fine && !reduce) {
+      var inner = menuBtn.querySelector('.menu-btn-inner');
+      menuBtn.addEventListener('mousemove', function (e) {
+        var r = menuBtn.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) * 0.3;
+        var y = (e.clientY - r.top - r.height / 2) * 0.3;
+        inner.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      });
+      menuBtn.addEventListener('mouseleave', function () { inner.style.transform = ''; });
+    }
+  }
+
   if (reduce) return;
 
   // 3. Marquee speeds up with scroll and flips with direction
