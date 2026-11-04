@@ -243,9 +243,13 @@ a.svc-foot:hover{color:var(--blue)}
 .cta-loc{margin:-72px 0 90px;font-size:15px;color:rgba(255,255,255,.6)}
 
 /* tours section (r15) */
-#tours{padding:50px 0 90px}
+#what-i-do{padding:50px 0 90px}
 .tour-list{list-style:none;max-width:640px;margin-bottom:36px}
 .tour-list li{position:relative;font-size:18px;line-height:1.55;padding:14px 0 14px 34px;border-top:1px solid rgba(14,26,48,.25)}
 .tour-list li::before{content:"";position:absolute;left:0;top:24px;width:16px;height:2px;background:var(--blue)}
 .tour-seen{margin-top:0;font-size:15px}
 @media(max-width:640px){.tour-list li{font-size:16px}}
+/* what I do (r16) */
+.tour-list li strong{font-weight:600;display:inline-block;margin-bottom:4px}
+.tour-seen strong{font-weight:600}
+#what-i-do .svc-foot{margin-top:48px}

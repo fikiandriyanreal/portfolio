@@ -40,7 +40,7 @@
   }
 
   // Section transitions: a rule draws in at the top of each section
-  var secs = document.querySelectorAll('#work, #tours, #about, #services, #process');
+  var secs = document.querySelectorAll('#work, #what-i-do, #about, #services, #process');
   secs.forEach(function (s) { s.classList.add('sline'); });
   if ('IntersectionObserver' in window && !reduce) {
     var so = new IntersectionObserver(function (es) {
