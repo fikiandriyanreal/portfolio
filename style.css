@@ -193,5 +193,5 @@ body.menu-open{overflow:hidden}
 }
 /* portrait (r7) */
 .about-side{display:flex;flex-direction:column;gap:28px}
-.portrait{width:100%;max-width:340px;height:auto;border-radius:14px;display:block}
-@media(max-width:760px){.portrait{max-width:260px}}
+.portrait{width:100%;max-width:480px;height:auto;border-radius:14px;display:block}
+@media(max-width:760px){.portrait{max-width:340px}}
