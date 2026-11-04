@@ -205,7 +205,14 @@
       });
     }
     if (peek) {
-      px += (tx - px) * 0.14; py += (ty - py) * 0.14;
+      // Keep the whole card inside the viewport, even at the edges
+      var pw = peek.offsetWidth, ph = peek.offsetHeight, m = 16;
+      var gx = tx, gy = ty;
+      if (window.innerWidth > pw + 2 * m) gx = Math.min(Math.max(tx, pw / 2 + m), window.innerWidth - pw / 2 - m);
+      else gx = window.innerWidth / 2;
+      if (window.innerHeight > ph + 2 * m) gy = Math.min(Math.max(ty, ph / 2 + m), window.innerHeight - ph / 2 - m);
+      else gy = window.innerHeight / 2;
+      px += (gx - px) * 0.14; py += (gy - py) * 0.14;
       peek.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0) translate(-50%,-50%) scale(' + (peekOn ? 1 : 0.85) + ')';
     }
     if (y < heroH()) {
