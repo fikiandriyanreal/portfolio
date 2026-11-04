@@ -211,22 +211,19 @@ body.menu-open{overflow:hidden}
 .timeline i{position:relative;width:10px;height:10px;background:var(--blue)}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
 .step{border-top:2px solid var(--ink);padding-top:20px}
-.step svg{display:block;width:52px;height:52px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;margin-bottom:18px}
+.step svg{display:block;width:72px;height:72px;}stroke:var(--ink);fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;margin-bottom:18px}
 .step h3{font-size:26px;margin:10px 0 4px;letter-spacing:-.01em}
 .step .stag{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:10px}
 .step p{font-size:15px;line-height:1.6;color:var(--muted)}
 @media(max-width:1000px){.steps{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.steps{grid-template-columns:1fr}.timeline{display:none}}
 
-/* process timeline motion: line draws in, markers pop, a runner travels the line and pauses at each step */
+/* process timeline motion: progress follows scroll - the line draws, markers pop and a runner travels the line */
 .timeline .runner{position:absolute;top:-3px;left:0;width:16px;height:16px;margin-left:-3px;background:var(--ink);border:3px solid var(--blue);box-sizing:border-box;opacity:0}
-@keyframes tl-run{0%{left:0}22%,30%{left:calc(25% + 7px)}47%,55%{left:calc(50% + 14px)}72%,80%{left:calc(75% + 21px)}97%,100%{left:calc(100% - 7px)}}
 @media(prefers-reduced-motion:no-preference){
- html.tl-armed .timeline::before{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.6s cubic-bezier(.32,.72,0,1)}
- html.tl-armed .timeline i{transform:scale(0);transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
- html.tl-armed .timeline i:nth-child(2){transition-delay:.52s}html.tl-armed .timeline i:nth-child(3){transition-delay:.74s}html.tl-armed .timeline i:nth-child(4){transition-delay:.96s}
- html.tl-armed .timeline.run::before{transform:none}
- html.tl-armed .timeline.run i{transform:none}
- html.tl-armed .timeline.run .runner{opacity:1;animation:tl-run 9s cubic-bezier(.32,.72,0,1) 1.2s infinite both}
- html.tl-armed .timeline.paused .runner{animation-play-state:paused}
+ html.tl-armed .timeline::before{transform:scaleX(var(--p,0));transform-origin:0 50%}
+ html.tl-armed .timeline i{transform:scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+ html.tl-armed .timeline i.on{transform:none}
+ html.tl-armed .timeline .runner{left:calc(var(--p,0)*(100% - 9px))}
+ html.tl-armed .timeline.run .runner{opacity:1}
 }

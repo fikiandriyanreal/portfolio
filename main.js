@@ -249,16 +249,31 @@
   }
   requestAnimationFrame(frame);
 
-  // Process timeline: draw in, then loop a runner along the line while visible
+  // Process timeline: progress follows scroll - the line draws, markers pop and a runner travels the line
   (function () {
     var tl = document.querySelector('.timeline');
-    if (!tl || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!tl || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     document.documentElement.classList.add('tl-armed');
-    new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) tl.classList.add('run');
-        tl.classList.toggle('paused', !e.isIntersecting);
+    var marks = Array.prototype.slice.call(tl.querySelectorAll('i'));
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = tl.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var p = (vh * 0.88 - r.top) / (vh * 0.55);
+      p = Math.max(0, Math.min(1, p));
+      tl.style.setProperty('--p', p.toFixed(4));
+      tl.classList.toggle('run', p > 0.02);
+      var w = tl.clientWidth;
+      marks.forEach(function (m) {
+        m.classList.toggle('on', p * (w - 9) >= m.offsetLeft + 1);
       });
-    }, { threshold: 0.3 }).observe(tl);
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   })();
 })();
