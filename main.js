@@ -58,6 +58,27 @@
   }, { passive: true });
 
 
+
+  // Smooth wheel scrolling (eased glide), desktop pointer only; native scroll position is kept
+  if (fine && !reduce) {
+    var targetY = window.scrollY, smoothing = false;
+    window.addEventListener('wheel', function (e) {
+      if (e.ctrlKey || document.body.classList.contains('menu-open')) return;
+      e.preventDefault();
+      var d = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+      targetY = Math.min(Math.max(0, targetY + d), document.documentElement.scrollHeight - window.innerHeight);
+      if (!smoothing) { smoothing = true; requestAnimationFrame(smoothStep); }
+    }, { passive: false });
+    var smoothStep = function () {
+      var cur = window.scrollY, d = targetY - cur;
+      if (Math.abs(d) < 0.6) { smoothing = false; return; }
+      window.scrollTo({ top: cur + d * 0.11, behavior: 'instant' });
+      requestAnimationFrame(smoothStep);
+    };
+    window.addEventListener('scroll', function () { if (!smoothing) targetY = window.scrollY; }, { passive: true });
+    window.addEventListener('pointerdown', function () { smoothing = false; targetY = window.scrollY; }, { passive: true });
+  }
+
   // 2b. Sticky hamburger: a round menu button appears once the hero nav scrolls away
   var menuBtn = document.querySelector('.menu-btn');
   var menuEl = document.getElementById('site-menu');
