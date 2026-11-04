@@ -84,13 +84,24 @@
   var menuEl = document.getElementById('site-menu');
   if (menuBtn && menuEl) {
     var menuOpen = false;
+    var lastY = window.scrollY;
+    var mobileMq = window.matchMedia('(max-width: 640px)');
     var onScrollMenu = function () {
-      document.body.classList.toggle('scrolled', window.scrollY > 100);
+      var y = window.scrollY;
+      document.body.classList.toggle('scrolled', y > 100);
+      // Mobile only: tuck the button away while scrolling down (reading),
+      // bring it back on scroll up or near the top
+      if (mobileMq.matches && !menuOpen) {
+        if (y > 140 && y > lastY + 4) document.body.classList.add('menu-hidden');
+        else if (y < lastY - 4 || y <= 140) document.body.classList.remove('menu-hidden');
+      }
+      lastY = y;
     };
     window.addEventListener('scroll', onScrollMenu, { passive: true });
     onScrollMenu();
     var setMenu = function (open) {
       menuOpen = open;
+      if (open) document.body.classList.remove('menu-hidden');
       document.body.classList.toggle('menu-open', open);
       menuBtn.setAttribute('aria-expanded', String(open));
       menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');

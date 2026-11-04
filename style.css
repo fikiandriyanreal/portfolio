@@ -189,7 +189,7 @@ body.menu-open .menu-links a:nth-child(3){transition-delay:.26s}
 body.menu-open .menu-contact a:nth-child(1){transition-delay:.34s}
 body.menu-open .menu-contact a:nth-child(2){transition-delay:.4s}
 body.menu-open{overflow:hidden}
-@media(max-width:640px){.menu-btn{top:10px;right:10px;width:48px;height:48px}.menu-btn .menu-bars,.menu-btn .menu-bars::before,.menu-btn .menu-bars::after{width:20px}.menu-panel{border-radius:28px 0 0 28px;padding:0 32px}}
+@media(max-width:640px){.menu-btn{top:10px;right:10px;width:48px;height:48px}body.menu-hidden .menu-btn{transform:scale(0)}body.menu-open .menu-btn{transform:scale(1)}.menu-btn .menu-bars,.menu-btn .menu-bars::before,.menu-btn .menu-bars::after{width:20px}.menu-panel{border-radius:28px 0 0 28px;padding:0 32px}}
 @media(prefers-reduced-motion:reduce){
   .menu-btn{transition:none}
   .menu-panel{transition:none}
