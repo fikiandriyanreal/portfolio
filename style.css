@@ -17,20 +17,18 @@ a{color:inherit;text-decoration:none}
 .nav-links a{font-size:16px;font-weight:500;opacity:.9}
 .nav-links a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:640px){.hero nav{padding:18px 20px}.nav-links{gap:18px}.nav-links a{font-size:14px}}
-.hero-meta{display:flex;justify-content:space-between;align-items:center;margin-top:48px}
-.pill{display:inline-flex;align-items:center;gap:10px;background:var(--blue-deep);color:#fff;border-radius:999px;padding:12px 22px;font-size:15px;font-weight:500}
-.pill .dot{width:10px;height:10px;border-radius:50%;background:#7CF5C8}
+.hero-meta{display:flex;justify-content:flex-end;align-items:center;margin-top:48px}
 .role{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:24px;font-style:italic}
 .role .arr{font-style:normal}
-@media(max-width:640px){.hero-meta{margin-top:32px}.role{font-size:18px}.pill{font-size:13px;padding:10px 16px}}
-.name{font-size:clamp(64px,13.5vw,188px);line-height:.92;letter-spacing:-.02em;margin-top:24px;padding-bottom:8px}
+@media(max-width:640px){.hero-meta{margin-top:32px}.role{font-size:18px}}
+.name{position:relative;z-index:2;font-size:clamp(64px,13.5vw,188px);line-height:.92;letter-spacing:-.02em;margin-top:24px;padding-bottom:8px}
 .name .dash{font-weight:300}
-.fan{position:relative;height:420px;margin-top:-40px;z-index:1}
+.fan{position:relative;height:420px;margin-top:clamp(40px,5vw,72px);z-index:1}
 .fan img{position:absolute;width:min(46%,560px);border-radius:14px;box-shadow:0 30px 80px rgba(7,16,50,.45);border:6px solid #fff}
 .fan .f1{left:0;top:60px;transform:rotate(-5deg)}
 .fan .f2{left:27%;top:0;z-index:2}
 .fan .f3{right:0;top:60px;transform:rotate(5deg)}
-@media(max-width:640px){.fan{height:230px;margin-top:-16px}.fan img{border-width:3px;border-radius:8px}}
+@media(max-width:640px){.fan{height:230px;margin-top:24px}.fan img{border-width:3px;border-radius:8px}}
 
 /* marquee */
 .marquee{overflow:hidden;border-bottom:1px solid var(--ink);padding:18px 0;background:var(--cream)}
