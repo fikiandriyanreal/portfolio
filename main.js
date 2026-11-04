@@ -21,7 +21,7 @@
   }
 
   // 2. Reveal on scroll (staggered inside groups)
-  var targets = document.querySelectorAll('.sec-title, .sec-lede, .case, .row, .about-text, .item, .svc-foot, .step, .cta-title, .cta-row, .foot');
+  var targets = document.querySelectorAll('.sec-title, .sec-lede, .case, .row, .about-text, .item, .svc-also, .svc-foot, .tour-list, .tour-seen, .step, .cta-title, .cta-row, .cta-loc, .foot');
   targets.forEach(function (el) { el.setAttribute('data-reveal', ''); });
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
@@ -40,7 +40,7 @@
   }
 
   // Section transitions: a rule draws in at the top of each section
-  var secs = document.querySelectorAll('#work, #about, #services, #process');
+  var secs = document.querySelectorAll('#work, #tours, #about, #services, #process');
   secs.forEach(function (s) { s.classList.add('sline'); });
   if ('IntersectionObserver' in window && !reduce) {
     var so = new IntersectionObserver(function (es) {
