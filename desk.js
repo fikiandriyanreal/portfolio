@@ -539,7 +539,8 @@
 
   var FIT_POINTS = [
     [55, 35, 0], [445, 35, 0], [55, 265, 0], [445, 265, 0],
-    [250, 66, 320], [110, 90, 230], [250, 150, 0], [386, 98, 220]
+    [250, 66, 334], [170, 58, 326], [330, 58, 326], [170, 76, 326], [330, 76, 326],
+    [110, 90, 230], [250, 150, 0], [386, 98, 220]
   ];
   var TARGET = [250, 150, 110];
 
@@ -555,12 +556,12 @@
   var cssW = 0, cssH = 0, dpr = 1;
 
   function resize() {
-    var w = wrap.clientWidth;
-    if (!w || w === cssW) return;
+    var r = canvas.getBoundingClientRect();
+    var w = r.width, h = r.height;
+    if (!w || !h || (w === cssW && h === cssH)) return;
     dpr = Math.min(2, window.devicePixelRatio || 1);
     cssW = w;
-    cssH = w * 0.82;
-    canvas.style.height = cssH + 'px';
+    cssH = h;
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
   }
@@ -594,11 +595,11 @@
     S.night += (S.nightTarget - S.night) * Math.min(1, dt * 5);
     if (Math.abs(S.nightTarget - S.night) < 0.004) S.night = S.nightTarget;
     S.pulses = S.pulses.filter(function (p) { return t - p.t0 < 0.6; });
-    if (!reduced && t - S.lastInteract > 6 && S.pointers.size === 0) S.yaw += 0.0011;
+    if (!reduced && t - S.lastInteract > 6 && S.pointers.size === 0) S.yaw += 0.00045;
 
     var cam = camera();
     var fr = fitRect(cam);
-    var fit = Math.min(cssW / (fr.maxX - fr.minX), cssH / (fr.maxY - fr.minY)) * 0.92 * S.zoom;
+    var fit = Math.min(cssW / (fr.maxX - fr.minX), cssH / (fr.maxY - fr.minY)) * 0.88 * S.zoom;
     var cx = cssW / 2, cy = cssH / 2 - 8;
     var midX = (fr.minX + fr.maxX) / 2, midY = (fr.minY + fr.maxY) / 2;
     function projRaw(p) {
@@ -682,16 +683,18 @@
     else if (id === 'lamp') { S.nightTarget = S.nightTarget > 0.5 ? 0 : 1; }
   }
 
-  function pickAnchor(px, py, rectW) {
+  function pickAnchor(px, py) {
+    var r = canvas.getBoundingClientRect();
     var cam = camera();
     var fr = fitRect(cam);
-    var fit = Math.min(rectW / (fr.maxX - fr.minX), (rectW * 0.82) / (fr.maxY - fr.minY)) * 0.92 * S.zoom;
+    var fit = Math.min(r.width / (fr.maxX - fr.minX), r.height / (fr.maxY - fr.minY)) * 0.88 * S.zoom;
     var midX = (fr.minX + fr.maxX) / 2, midY = (fr.minY + fr.maxY) / 2;
-    var best = null, bestD = 46;
+    var cx = r.width / 2, cy = r.height / 2 - 8;
+    var best = null, bestD = 52;
     ANCHORS.forEach(function (a) {
       var d = sub(a.p, TARGET);
-      var ax = (dot(d, cam.u) - midX) * fit + rectW / 2;
-      var ay = (-dot(d, cam.v) - midY) * fit + rectW * 0.82 / 2 - 8;
+      var ax = (dot(d, cam.u) - midX) * fit + cx;
+      var ay = (-dot(d, cam.v) - midY) * fit + cy;
       var dist = Math.hypot(ax - px, ay - py);
       if (dist < bestD) { bestD = dist; best = a.id; }
     });
@@ -731,7 +734,7 @@
     S.lastInteract = performance.now() / 1000;
     if (S.moved < 8) {
       var r = canvas.getBoundingClientRect();
-      var id = pickAnchor(e.clientX - r.left, e.clientY - r.top, r.width);
+      var id = pickAnchor(e.clientX - r.left, e.clientY - r.top);
       if (id) { onTapAction(id); setActive(id); }
       else setActive(null);
     }
