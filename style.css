@@ -256,3 +256,47 @@ a.svc-foot:hover{color:var(--blue)}
 
 /* mobile section line spacing (r17) */
 @media(max-width:640px){#services,#process{padding-top:50px}}
+
+/* interactive process icons - endcap-style, portfolio's own stroke + blue */
+.step svg{transition:transform .4s cubic-bezier(.34,1.56,.64,1),stroke .25s;transform-origin:50% 50%;--sp:1}
+.step svg .i-typing circle{fill:var(--ink);stroke:none}
+.step svg .i-dot{fill:var(--ink);stroke:none}
+.step svg .i-ln{stroke-dasharray:12;stroke-dashoffset:0}
+.step svg .i-check{stroke-dasharray:14;stroke-dashoffset:0}
+.step svg .i-ring{opacity:0;transform-box:fill-box;transform-origin:center}
+.step svg .i-pop{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion: no-preference){
+  .step svg .i-typing circle{animation:i-type calc(1.6s*var(--sp)) ease-in-out infinite}
+  .step svg .i-typing circle:nth-child(2){animation-delay:.18s}
+  .step svg .i-typing circle:nth-child(3){animation-delay:.36s}
+  .step svg .i-pop{animation:i-pop calc(5s*var(--sp)) cubic-bezier(.34,1.56,.64,1) infinite}
+  .step svg .i-ln{stroke-dashoffset:12;animation:i-write calc(4.6s*var(--sp)) ease-in-out infinite;animation-delay:calc(var(--k)*.35s)}
+  .step svg .i-check{stroke-dashoffset:14;animation:i-check calc(4.6s*var(--sp)) ease-in-out infinite}
+  .step svg .i-block{animation:i-block calc(4.6s*var(--sp)) infinite}
+  .step svg .i-ring{animation:i-ping calc(2.2s*var(--sp)) ease-out infinite}
+  .step svg .i-ring-b{animation-delay:calc(1.1s*var(--sp))}
+}
+@keyframes i-type{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-2.5px);opacity:1}}
+@keyframes i-pop{0%,8%{transform:scale(0);opacity:0}22%,82%{transform:scale(1);opacity:1}94%,100%{transform:scale(0);opacity:0}}
+@keyframes i-write{0%,12%{stroke-dashoffset:12}34%,78%{stroke-dashoffset:0}92%,100%{stroke-dashoffset:12}}
+@keyframes i-check{0%,18%{stroke-dashoffset:14}42%,80%{stroke-dashoffset:0}94%,100%{stroke-dashoffset:14}}
+@keyframes i-block{0%,30%,90%,100%{fill:none}45%,75%{fill:var(--blue)}}
+@keyframes i-ping{0%{opacity:.6;transform:scale(.7)}100%{opacity:0;transform:scale(1.25)}}
+.step:hover svg{transform:rotate(-4deg) scale(1.1);stroke:var(--blue);--sp:.4}
+.step:active svg{transform:rotate(-4deg) scale(1.1);stroke:var(--blue);--sp:.4}
+
+/* footer signoff: giant name, letters rise in, each lifts on hover/tap */
+.signoff{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(52px,10.2vw,160px);line-height:1;letter-spacing:-.02em;margin-top:64px;white-space:nowrap;color:#fff;user-select:none;cursor:default}
+.signoff span{display:inline-block;transform:translateY(55%);opacity:0;transition:transform .9s cubic-bezier(.34,1.4,.4,1) calc(var(--i)*.05s),opacity .55s ease calc(var(--i)*.05s),color .25s ease}
+.signoff.in span{transform:none;opacity:1}
+.signoff .sp{width:.28em}
+.signoff .dot{color:#8AA4FF}
+.signoff.in span:hover{transform:translateY(-12%) rotate(-4deg);color:#8AA4FF;transition-delay:0s}
+.signoff.in span:active{transform:translateY(-12%) rotate(-4deg);color:#8AA4FF;transition-delay:0s}
+@media (prefers-reduced-motion: no-preference){
+  .signoff.in .dot{animation:signhop 4s 1.6s cubic-bezier(.34,1.56,.64,1) infinite}
+}
+@keyframes signhop{0%,72%,100%{transform:none}82%{transform:translateY(-26%)}}
+@media (prefers-reduced-motion: reduce){
+  .signoff span{transform:none;opacity:1;transition:none}
+}

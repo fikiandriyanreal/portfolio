@@ -288,3 +288,18 @@
     update();
   })();
 })();
+
+// Footer signoff: letters rise in when the footer scrolls into view
+;(function () {
+  var s = document.querySelector('.signoff');
+  if (!s) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { s.classList.add('in'); so.disconnect(); } });
+    }, { threshold: 0.2 });
+    so.observe(s);
+  } else {
+    s.classList.add('in');
+  }
+})();
