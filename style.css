@@ -300,3 +300,25 @@ a.svc-foot:hover{color:var(--blue)}
 @media (prefers-reduced-motion: reduce){
   .signoff span{transform:none;opacity:1;transition:none}
 }
+
+
+/* welcome loader: typing dots -> name -> panel lifts into the hero */
+.loader{position:fixed;inset:0;z-index:200;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center}
+.loader-inner{position:relative;display:flex;align-items:baseline;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(44px,8vw,110px);letter-spacing:-.02em;white-space:nowrap}
+.loader-dots{display:inline-flex;gap:.14em;position:absolute;left:50%;transform:translateX(-50%)}
+.loader-dots i{width:.16em;height:.16em;border-radius:50%;background:#fff;opacity:.3;animation:ld-pulse 1s ease-in-out infinite}
+.loader-dots i:nth-child(2){animation-delay:.15s}
+.loader-dots i:nth-child(3){animation-delay:.3s}
+@keyframes ld-pulse{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-.35em)}}
+.loader-name{opacity:0;visibility:hidden}
+.loader-name .ch{display:inline-block;transform:translateY(110%);opacity:0}
+.loader.p2 .loader-dots i{animation:ld-scatter .45s cubic-bezier(.5,0,.75,0) forwards}
+.loader.p2 .loader-dots i:nth-child(1){--dx:-1.4em;--dy:-1.2em}
+.loader.p2 .loader-dots i:nth-child(2){--dx:0;--dy:-1.8em;animation-delay:.05s}
+.loader.p2 .loader-dots i:nth-child(3){--dx:1.4em;--dy:-1.2em;animation-delay:.1s}
+@keyframes ld-scatter{to{transform:translate(var(--dx),var(--dy)) scale(.4);opacity:0}}
+.loader.p2 .loader-name{opacity:1;visibility:visible}
+.loader.p2 .loader-name .ch{animation:ld-rise .6s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(var(--i)*.035s + .15s)}
+@keyframes ld-rise{to{transform:none;opacity:1}}
+.loader.p3{transition:transform .7s cubic-bezier(.76,0,.24,1);transform:translateY(-100%)}
+@media (prefers-reduced-motion: reduce){.loader{display:none}}

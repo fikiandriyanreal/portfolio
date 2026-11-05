@@ -5,6 +5,34 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   root.classList.add('js');
 
+  // 0. Welcome loader: typing dots -> name rises -> panel lifts into the hero.
+  // Skipped for reduced motion, repeat visits, or any failure - content is never blocked.
+  var loaderSeen = false;
+  try { loaderSeen = sessionStorage.getItem('loader-seen') === '1'; } catch (e) {}
+  var loaderEl = document.getElementById('loader');
+  var loaderDelay = 0;
+  if (loaderEl && !reduce && !loaderSeen) {
+    try {
+      var nameEl = loaderEl.querySelector('.loader-name');
+      var text = nameEl.textContent; nameEl.textContent = '';
+      var ci = 0;
+      text.split('').forEach(function (chr) {
+        var s = document.createElement('span');
+        s.className = 'ch'; s.style.setProperty('--i', ci++);
+        s.textContent = chr === ' ' ? '\u00A0' : chr;
+        nameEl.appendChild(s);
+      });
+      loaderEl.hidden = false;
+      setTimeout(function () { loaderEl.classList.add('p2'); }, 1000);
+      setTimeout(function () { loaderEl.classList.add('p3'); }, 2100);
+      loaderDelay = 2450;
+      setTimeout(function () { loaderEl.remove(); }, 3300);
+      try { sessionStorage.setItem('loader-seen', '1'); } catch (e) {}
+    } catch (e) { if (loaderEl) loaderEl.remove(); loaderDelay = 0; }
+  } else if (loaderEl) {
+    loaderEl.remove();
+  }
+
   // 1. Hero name: lines rise from a mask on load
   var name = document.querySelector('.name');
   if (name && !reduce) {
@@ -13,9 +41,7 @@
     name.innerHTML =
       '<span class="line" aria-hidden="true"><span>Fiki</span></span>' +
       '<span class="line" aria-hidden="true"><span>Andriyan' + (dots ? '<span class="dots"><span></span><span></span><span></span></span>' : '') + '</span></span>';
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { root.classList.add('loaded'); });
-    });
+    setTimeout(function () { root.classList.add('loaded'); }, loaderDelay);
   } else {
     root.classList.add('loaded');
   }
