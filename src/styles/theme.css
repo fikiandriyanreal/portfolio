@@ -31,4 +31,12 @@
 */
 
 :root {
+	--color-brand: light-dark(#1b3fe0, #6e8cff);
+	--color-brand-hover: light-dark(#1532b8, #8aa4ff);
+	--color-on-brand: light-dark(#ffffff, #0e1a30);
+	--color-bg: light-dark(#f2efe9, #0e1a30);
+	--color-text: light-dark(#0e1a30, #f2efe9);
+	--font-heading: var(--font-serif), Georgia, serif;
+	--font-weight-heading: 800;
+	--font-weight-display: 800;
 }

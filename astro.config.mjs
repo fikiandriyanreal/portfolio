@@ -28,6 +28,14 @@ export default defineConfig({
 		},
 		{
 			provider: fontProviders.google(),
+			name: "Fraunces",
+			cssVariable: "--font-serif",
+			weights: [300, 400, 600, 800],
+			styles: ["normal", "italic"],
+			fallbacks: ["Georgia", "serif"],
+		},
+		{
+			provider: fontProviders.google(),
 			name: "JetBrains Mono",
 			cssVariable: "--font-mono",
 			weights: [400, 500],
