@@ -5,6 +5,7 @@ import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
 
 export default defineConfig({
+	site: "https://www.fikiandriyan.workers.dev",
 	output: "server",
 	adapter: cloudflare(),
 	image: {
