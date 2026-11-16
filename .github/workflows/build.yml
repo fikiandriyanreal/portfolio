@@ -1,0 +1,22 @@
+name: build
+on:
+  push:
+    branches: [astro]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
+      - name: Bundle size vs Workers free tier (3 MiB compressed)
+        run: |
+          du -sh dist
+          find dist -type f -size +1M -exec ls -lh {} \;
+          npx wrangler deploy --dry-run 2>&1 | grep -iE 'upload|gzip|total' || true
