@@ -1,0 +1,456 @@
+/*
+  blog-chrome.css -- the portfolio's header (top nav + hamburger overlay)
+  and footer (contact block + giant signoff) applied to the blog pages,
+  so /posts and friends share the exact chrome of the portfolio home.
+
+  Class names are prefixed pf- to avoid collisions with the EmDash
+  template classes in Base.astro. Values mirror src/styles/portfolio.css;
+  colors that differ per mode use light-dark() and resolve through the
+  same color-scheme the blog theme sets.
+*/
+
+:root {
+	--pf-blue: #1b3fe0;
+	--pf-blue-deep: #0e1a30;
+	--pf-ink: light-dark(#0e1a30, #f2efe9);
+	--pf-shadow-btn: light-dark(rgba(14, 26, 48, 0.28), rgba(2, 6, 18, 0.55));
+}
+
+/* top nav (identical to the portfolio hero nav, ink text on the page bg) */
+.pf-header {
+	padding: 24px 0;
+}
+.pf-nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 0 40px;
+}
+.pf-brand {
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--pf-ink);
+	text-decoration: none;
+}
+.pf-nav-links {
+	display: flex;
+	gap: 28px;
+}
+.pf-nav-links a {
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--pf-ink);
+	opacity: 0.9;
+	text-decoration: none;
+}
+.pf-nav-links a:hover,
+.pf-nav-links a[aria-current] {
+	opacity: 1;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+@media (max-width: 640px) {
+	.pf-header {
+		padding: 18px 0;
+	}
+	.pf-nav {
+		padding: 0 20px;
+	}
+	.pf-nav-links {
+		gap: 18px;
+	}
+	.pf-nav-links a {
+		font-size: 14px;
+	}
+}
+
+/* sticky hamburger: round button appears once the top nav scrolls away */
+.pf-menu-btn {
+	position: fixed;
+	top: 20px;
+	right: 24px;
+	z-index: 70;
+	width: 76px;
+	height: 76px;
+	border: 0;
+	border-radius: 50%;
+	background: var(--pf-blue);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform: scale(0);
+	transition:
+		transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+		background 0.25s;
+	box-shadow: 0 12px 30px var(--pf-shadow-btn);
+}
+body.scrolled .pf-menu-btn {
+	transform: scale(1);
+}
+.pf-menu-btn-inner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	will-change: transform;
+}
+.pf-menu-bars {
+	position: relative;
+	width: 24px;
+	height: 2px;
+	background: #fff;
+	transition: background 0.2s;
+}
+.pf-menu-bars::before,
+.pf-menu-bars::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 24px;
+	height: 2px;
+	background: #fff;
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pf-menu-bars::before {
+	transform: translateY(-6px);
+}
+.pf-menu-bars::after {
+	transform: translateY(6px);
+}
+body.menu-open .pf-menu-btn {
+	background: #fff;
+	transform: scale(1);
+}
+body.menu-open .pf-menu-bars {
+	background: transparent;
+}
+body.menu-open .pf-menu-bars::before {
+	background: #0e1a30;
+	transform: rotate(45deg);
+}
+body.menu-open .pf-menu-bars::after {
+	background: #0e1a30;
+	transform: rotate(-45deg);
+}
+@media (min-width: 761px) {
+	body.scrolled .pf-menu-btn:hover {
+		transform: scale(1.08);
+	}
+}
+.pf-site-menu {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	pointer-events: none;
+	visibility: hidden;
+	transition: visibility 0s 0.6s;
+}
+body.menu-open .pf-site-menu {
+	pointer-events: auto;
+	visibility: visible;
+	transition: none;
+}
+.pf-menu-panel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: min(460px, 92%);
+	background: var(--pf-blue-deep);
+	color: #fff;
+	border-radius: 40px 0 0 40px;
+	transform: translateX(105%);
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 56px;
+}
+body.menu-open .pf-menu-panel {
+	transform: none;
+}
+.pf-menu-links {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.pf-menu-links a {
+	font-family: var(--font-serif, "Fraunces"), Georgia, serif;
+	font-weight: 800;
+	font-size: clamp(48px, 6vw, 72px);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: #fff;
+	text-decoration: none;
+	display: flex;
+	align-items: baseline;
+	gap: 16px;
+	transition:
+		color 0.25s,
+		opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+		transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	opacity: 0;
+	transform: translateY(24px);
+}
+.pf-menu-links a:hover {
+	color: #6e8cff;
+}
+.pf-menu-num {
+	font-family: var(--font-body, "Inter"), system-ui, sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	color: #6e8cff;
+}
+.pf-menu-contact {
+	margin-top: 60px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	font-size: 16px;
+}
+.pf-menu-contact a {
+	color: rgba(255, 255, 255, 0.72);
+	text-decoration: none;
+	transition:
+		color 0.2s,
+		opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+		transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	opacity: 0;
+	transform: translateY(16px);
+}
+.pf-menu-contact a:hover {
+	color: #fff;
+}
+body.menu-open .pf-menu-links a,
+body.menu-open .pf-menu-contact a {
+	opacity: 1;
+	transform: none;
+}
+body.menu-open .pf-menu-links a:nth-child(1) {
+	transition-delay: 0.12s;
+}
+body.menu-open .pf-menu-links a:nth-child(2) {
+	transition-delay: 0.19s;
+}
+body.menu-open .pf-menu-links a:nth-child(3) {
+	transition-delay: 0.26s;
+}
+body.menu-open .pf-menu-links a:nth-child(4) {
+	transition-delay: 0.33s;
+}
+body.menu-open .pf-menu-contact a:nth-child(1) {
+	transition-delay: 0.4s;
+}
+body.menu-open .pf-menu-contact a:nth-child(2) {
+	transition-delay: 0.46s;
+}
+body.menu-open .pf-menu-contact a:nth-child(3) {
+	transition-delay: 0.52s;
+}
+body.menu-open {
+	overflow: hidden;
+}
+@media (max-width: 640px) {
+	.pf-menu-btn {
+		top: 10px;
+		right: 10px;
+		width: 48px;
+		height: 48px;
+	}
+	body.menu-hidden .pf-menu-btn {
+		transform: scale(0);
+	}
+	body.menu-open .pf-menu-btn {
+		transform: scale(1);
+	}
+	.pf-menu-btn .pf-menu-bars,
+	.pf-menu-btn .pf-menu-bars::before,
+	.pf-menu-btn .pf-menu-bars::after {
+		width: 20px;
+	}
+	.pf-menu-panel {
+		border-radius: 28px 0 0 28px;
+		padding: 0 32px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.pf-menu-btn,
+	.pf-menu-panel,
+	.pf-menu-links a,
+	.pf-menu-contact a,
+	.pf-site-menu {
+		transition: none;
+	}
+}
+
+/* footer: the portfolio contact block, ink island in both modes */
+.pf-contact {
+	background: var(--pf-blue-deep);
+	color: #fff;
+	padding: 110px 0 40px;
+	margin-top: 96px;
+	border-radius: 40px 40px 0 0;
+}
+.pf-wrap {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 0 40px;
+}
+.pf-cta-title {
+	font-family: var(--font-serif, "Fraunces"), Georgia, serif;
+	font-weight: 800;
+	font-size: clamp(64px, 11vw, 160px);
+	line-height: 0.95;
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+.pf-cta-avatar {
+	display: inline-block;
+	width: 0.78em;
+	height: 0.78em;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-right: 0.22em;
+	vertical-align: -0.04em;
+}
+.pf-cta-avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 8%;
+	display: block;
+}
+.pf-cta-sub {
+	font-size: 18px;
+	line-height: 1.5;
+	max-width: 520px;
+	margin-top: 28px;
+	color: rgba(255, 255, 255, 0.78);
+}
+.pf-cta-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin: 36px 0 90px;
+}
+.pf-btn {
+	font-size: 17px;
+	font-weight: 500;
+	padding: 16px 30px;
+	border-radius: 999px;
+	text-decoration: none;
+	transition:
+		transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+		border-color 0.2s;
+}
+.pf-btn--solid {
+	background: #fff;
+	color: var(--pf-blue-deep);
+}
+.pf-btn--ghost {
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	color: #fff;
+}
+.pf-btn--ghost:hover {
+	border-color: #fff;
+}
+.pf-cta-loc {
+	margin: -72px 0 90px;
+	font-size: 15px;
+	color: rgba(255, 255, 255, 0.6);
+}
+.pf-foot {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	padding-top: 24px;
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.65);
+}
+@media (max-width: 640px) {
+	.pf-contact {
+		border-radius: 28px 28px 0 0;
+		margin-top: 64px;
+		padding-top: 80px;
+	}
+	.pf-wrap {
+		padding: 0 20px;
+	}
+}
+
+/* footer signoff: giant name, letters rise in, each lifts on hover/tap */
+.pf-signoff {
+	font-family: var(--font-serif, "Fraunces"), Georgia, serif;
+	font-weight: 800;
+	font-size: clamp(52px, 10.2vw, 160px);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	margin-top: 64px;
+	white-space: nowrap;
+	color: #fff;
+	user-select: none;
+	cursor: default;
+}
+.pf-signoff span {
+	display: inline-block;
+	transform: translateY(55%);
+	opacity: 0;
+	transition:
+		transform 0.9s cubic-bezier(0.34, 1.4, 0.4, 1) calc(var(--i) * 0.05s),
+		opacity 0.55s ease calc(var(--i) * 0.05s),
+		color 0.25s ease;
+}
+.pf-signoff.in span {
+	transform: none;
+	opacity: 1;
+}
+.pf-signoff .sp {
+	width: 0.28em;
+}
+.pf-signoff .dot {
+	color: #8aa4ff;
+}
+.pf-signoff.in span:hover,
+.pf-signoff.in span:active {
+	transform: translateY(-12%) rotate(-4deg);
+	color: #8aa4ff;
+	transition-delay: 0s;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.pf-signoff.in .dot {
+		animation: pf-signhop 4s 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+	}
+}
+@keyframes pf-signhop {
+	0%,
+	72%,
+	100% {
+		transform: none;
+	}
+	82% {
+		transform: translateY(-26%);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.pf-signoff span {
+		transform: none;
+		opacity: 1;
+		transition: none;
+	}
+}
+
+/* static mirrors so the manual switcher (html.light/html.dark) also works
+   after lightningcss compiles light-dark() to OS-only toggles */
+:root.light {
+	--pf-ink: #0e1a30;
+	--pf-shadow-btn: rgba(14, 26, 48, 0.28);
+}
+:root.dark {
+	--pf-ink: #f2efe9;
+	--pf-shadow-btn: rgba(2, 6, 18, 0.55);
+}

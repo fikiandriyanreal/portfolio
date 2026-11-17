@@ -19,6 +19,18 @@
   :root.light{color-scheme:light}
   :root.dark{color-scheme:dark}
 }
+:root.light{
+  --blue-accent:#1B3FE0;--cream:#F2EFE9;--ink:#0E1A30;--ink-soft:#2A3548;--muted:#5C6675;
+  --surface:#FFFFFF;--line-soft:rgba(14,26,48,.16);--line:rgba(14,26,48,.22);
+  --shadow-card:rgba(14,26,48,.14);--shadow-pop:rgba(14,26,48,.25);--shadow-btn:rgba(14,26,48,.28);
+  --peek-bg:#47494B;
+}
+:root.dark{
+  --blue-accent:#8AA4FF;--cream:#0B1424;--ink:#F2EFE9;--ink-soft:#C7CEE0;--muted:#93A1BE;
+  --surface:#132141;--line-soft:rgba(242,239,233,.2);--line:rgba(242,239,233,.26);
+  --shadow-card:rgba(2,6,18,.55);--shadow-pop:rgba(2,6,18,.6);--shadow-btn:rgba(2,6,18,.55);
+  --peek-bg:#1A2A4D;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--cream);color:var(--ink);font-family:'Inter','Segoe UI',system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}

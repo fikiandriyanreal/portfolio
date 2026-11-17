@@ -57,3 +57,43 @@
 	--font-weight-heading: 800;
 	--font-weight-display: 800;
 }
+
+/*
+ * Manual theme switcher support: the light-dark() values above compile to
+ * toggles that only follow the OS preference, so mirror both palettes
+ * statically behind the html.light / html.dark classes the switcher sets.
+ */
+:root.light {
+	--color-brand: #1b3fe0;
+	--color-brand-hover: #1532b8;
+	--color-on-brand: #ffffff;
+	--color-bg: #f2efe9;
+	--color-surface: #ffffff;
+	--color-fill: #f2f2f2;
+	--color-fill-strong: #e8e8e8;
+	--color-text: #0e1a30;
+	--color-text-secondary: #525252;
+	--color-muted: #6b6b6b;
+	--color-border: #e5e5e5;
+	--color-border-subtle: #efefef;
+	--color-border-strong: #d4d4d4;
+	--color-shadow: rgb(0 0 0 / 0.06);
+	--color-shadow-strong: rgb(0 0 0 / 0.12);
+}
+:root.dark {
+	--color-brand: #8aa4ff;
+	--color-brand-hover: #a5b8ff;
+	--color-on-brand: #0e1a30;
+	--color-bg: #0b1424;
+	--color-surface: #132141;
+	--color-fill: #1a2a4d;
+	--color-fill-strong: #223559;
+	--color-text: #f2efe9;
+	--color-text-secondary: #aab6d4;
+	--color-muted: #8fa0c4;
+	--color-border: #26395f;
+	--color-border-subtle: #1c2c4a;
+	--color-border-strong: #33487a;
+	--color-shadow: rgb(2 6 18 / 0.5);
+	--color-shadow-strong: rgb(2 6 18 / 0.65);
+}

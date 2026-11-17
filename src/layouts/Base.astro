@@ -7,12 +7,12 @@ import {
 	EmDashBodyEnd,
 } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
-import LiveSearch from "emdash/ui/search";
 import { Font } from "astro:assets";
 import { getSiteLocale } from "../utils/locale";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import "../styles/tokens.css";
 import "../styles/theme.css";
+import "../styles/blog-chrome.css";
 
 interface Props {
 	title: string;
@@ -103,7 +103,7 @@ function navCurrent(url: string): "page" | "true" | undefined {
 }
 
 const lang = getSiteLocale() ?? "en";
-const monogram = [...siteTitle.trim()][0]?.toUpperCase() ?? "";
+const onBlog = Astro.url.pathname.startsWith("/posts");
 const year = new Date().getFullYear();
 ---
 
@@ -140,109 +140,57 @@ const year = new Date().getFullYear();
 	<body>
 		<EmDashBodyStart page={pageCtx} />
 		<a href="#main" class="skip-link">Skip to content</a>
-		<header class="site-header">
-			<div class="frame site-header__inner">
-				<a href="/" class="brand">
-					{
-						siteLogo ? (
-							<img
-								src={siteLogo.url}
-								alt={siteLogo.alt || siteTitle}
-								class="brand__logo"
-							/>
-						) : (
-							<>
-								{monogram && (
-									<span class="brand__mark" aria-hidden="true">
-										{monogram}
-									</span>
-								)}
-								<span class="brand__name">{siteTitle}</span>
-							</>
-						)
-					}
-				</a>
-				{
-					menuItems.length > 0 && (
-						<nav class="site-nav" aria-label="Main">
-							<ul>
-								{menuItems.map((item) => (
-									<li>
-										<a
-											href={item.url}
-											target={item.target}
-											rel={
-												item.target === "_blank"
-													? "noopener noreferrer"
-													: undefined
-											}
-											aria-current={navCurrent(item.url)}
-										>
-											{item.label}
-										</a>
-									</li>
-								))}
-							</ul>
-						</nav>
-					)
-				}
-				<div class="site-header__actions">
-					<div class="site-search" role="search" aria-label="Site">
-						<svg
-							class="site-search__icon"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.75"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-							><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"
-							></path></svg
-						>
-						<LiveSearch
-							placeholder="Search"
-							class="site-search__field"
-							inputClass="site-search-input"
-							resultsClass="site-search-results"
-							resultClass="site-search-result"
-							collections={["posts", "pages"]}
-						/>
-						<kbd class="site-search__kbd" aria-hidden="true"
-							><span dir="ltr">⌘K</span></kbd
-						>
-					</div>
-					<a
-						href="/search"
-						class="icon-btn site-search-link"
-						aria-label="Search"
+		<header class="pf-header">
+			<nav class="pf-nav" aria-label="Main">
+				<a class="pf-brand" href="/">&copy; Fiki Andriyan</a>
+				<div class="pf-nav-links">
+					<a href="/#work">Work</a>
+					<a href="/#about">About</a>
+					<a href="/#contact">Contact</a>
+					<a href="/posts" aria-current={onBlog ? "page" : undefined}>Blog</a>
+				</div>
+			</nav>
+		</header>
+		<button
+			class="pf-menu-btn"
+			aria-expanded="false"
+			aria-controls="site-menu"
+			aria-label="Open menu"
+		>
+			<span class="pf-menu-btn-inner"
+				><span class="pf-menu-bars" aria-hidden="true"></span></span
+			>
+		</button>
+		<div class="pf-site-menu" id="site-menu" aria-hidden="true">
+			<div class="pf-menu-panel">
+				<nav class="pf-menu-links" aria-label="Site menu">
+					<a href="/#work"><span class="pf-menu-num">01</span>Work</a>
+					<a href="/#about"><span class="pf-menu-num">02</span>About</a>
+					<a href="/#contact"><span class="pf-menu-num">03</span>Contact</a>
+					<a href="/posts" aria-current={onBlog ? "page" : undefined}
+						><span class="pf-menu-num">04</span>Blog</a
 					>
-						<svg
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.75"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-							><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"
-							></path></svg
-						>
-					</a>
-					{
-						isLoggedIn && (
-							<a href="/_emdash/admin" class="btn btn--ghost btn--sm nav-admin">
-								Admin
-							</a>
-						)
-					}
+				</nav>
+				<div class="pf-menu-contact">
+					<a href="mailto:fikiandriyanreal@gmail.com"
+						>fikiandriyanreal@gmail.com</a
+					>
+					<a
+						href="https://wa.me/6285157124122?text=Hi+Fiki%2C+I%27d+like+to+ask+about+a+website+project."
+						target="_blank"
+						rel="noopener">WhatsApp</a
+					>
+					<a href="/Fiki-Andriyan-CV.pdf" download="Fiki-Andriyan-CV.pdf"
+						>Download CV</a
+					>
 				</div>
 			</div>
-		</header>
+		</div>
 		<script is:inline>
 			// Inline, so the height is set before the browser scrolls to a URL fragment
 			(function () {
-				var header = document.querySelector(".site-header");
+				var header = document.querySelector(".pf-header");
+				if (!header) return;
 				function setHeight() {
 					document.documentElement.style.setProperty(
 						"--header-height",
@@ -258,149 +206,52 @@ const year = new Date().getFullYear();
 			<slot />
 		</main>
 
-		<footer class="site-footer band">
-			<div class="frame site-footer__grid">
-				<div class="site-footer__brand">
-					<a href="/" class="brand">
-						{
-							siteLogo ? (
-								<img
-									src={siteLogo.url}
-									alt={siteLogo.alt || siteTitle}
-									class="brand__logo"
-								/>
-							) : (
-								<>
-									{monogram && (
-										<span class="brand__mark" aria-hidden="true">
-											{monogram}
-										</span>
-									)}
-									<span class="brand__name">{siteTitle}</span>
-								</>
-							)
-						}
-					</a>
-					{siteTagline && <p class="site-footer__tagline">{siteTagline}</p>}
+		<footer class="pf-contact" id="contact">
+			<div class="pf-wrap">
+				<h2 class="pf-cta-title">
+					<span class="pf-cta-avatar"
+						><img src="/fiki.jpg" alt="" width="959" height="1198" /></span
+					>Tell me about<br />your project.
+				</h2>
+				<p class="pf-cta-sub">
+					Share what you're building and who it's for. Email or WhatsApp,
+					whichever is easier.
+				</p>
+				<div class="pf-cta-row">
+					<a class="pf-btn pf-btn--solid" href="mailto:fikiandriyanreal@gmail.com"
+						>fikiandriyanreal@gmail.com</a
+					>
+					<a
+						class="pf-btn pf-btn--ghost"
+						href="https://wa.me/6285157124122?text=Hi+Fiki%2C+I%27d+like+to+ask+about+a+website+project."
+						>WhatsApp</a
+					>
+					<a
+						class="pf-btn pf-btn--ghost"
+						href="/Fiki-Andriyan-CV.pdf"
+						download="Fiki-Andriyan-CV.pdf">Download CV</a
+					>
 				</div>
-				{
-					menuItems.length > 0 && (
-						<nav class="site-footer__col" aria-labelledby="footer-navigate">
-							<h2 id="footer-navigate" class="eyebrow">
-								Navigate
-							</h2>
-							<ul class="site-footer__links">
-								{menuItems.map((item) => (
-									<li>
-										<a
-											href={item.url}
-											target={item.target}
-											rel={
-												item.target === "_blank"
-													? "noopener noreferrer"
-													: undefined
-											}
-										>
-											{item.label}
-										</a>
-									</li>
-								))}
-							</ul>
-						</nav>
-					)
-				}
-				<div class="site-footer__col">
-					<h2 class="eyebrow">Connect</h2>
-					<ul class="site-footer__links">
-						<li>
-							<a href="/rss.xml">
-								<svg
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.75"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									aria-hidden="true"
-									><path d="M4 11a9 9 0 0 1 9 9"></path><path
-										d="M4 4a16 16 0 0 1 16 16"></path><circle
-										cx="5"
-										cy="19"
-										r="1"></circle></svg
-								>
-								RSS feed
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="site-footer__col site-footer__widgets">
-					<WidgetArea name="footer" />
-				</div>
-			</div>
-			<div class="band site-footer__bottom">
-				<div class="frame site-footer__bottom-inner">
-					<p class="site-footer__meta">
-						{`© ${year} ${siteTitle}.`} Powered by{" "}
-						<a href="https://emdashcms.com">EmDash</a>
-					</p>
+				<p class="pf-cta-loc">
+					Based in Bali &middot; GMT+8 &middot; English or Bahasa Indonesia
+				</p>
+				<div class="pf-foot">
+					<span>&copy; {year} Fiki Andriyan</span>
+					<span class="pf-clock">Bali, Indonesia</span>
 					<div class="theme-switcher" role="group" aria-label="Color theme">
-						<button
-							type="button"
-							class="theme-btn"
-							data-theme="light"
-							aria-label="Light"
-						>
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.75"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-								><circle cx="12" cy="12" r="4"></circle><path
-									d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-								></path></svg
-							>
+						<button type="button" class="theme-btn" data-theme="light" aria-label="Light">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
 						</button>
-						<button
-							type="button"
-							class="theme-btn"
-							data-theme="dark"
-							aria-label="Dark"
-						>
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.75"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-								><path
-									d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
-								></path></svg
-							>
+						<button type="button" class="theme-btn" data-theme="dark" aria-label="Dark">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
 						</button>
-						<button
-							type="button"
-							class="theme-btn"
-							data-theme="system"
-							aria-label="System"
-						>
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.75"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-								><rect x="2" y="3" width="20" height="14" rx="2"></rect><path
-									d="M8 21h8M12 17v4"></path></svg
-							>
+						<button type="button" class="theme-btn" data-theme="system" aria-label="System">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
 						</button>
 					</div>
+				</div>
+				<div class="pf-signoff" aria-hidden="true">
+					<span style="--i:0">F</span><span style="--i:1">i</span><span style="--i:2">k</span><span style="--i:3">i</span><span class="sp" style="--i:4">&nbsp;</span><span style="--i:5">A</span><span style="--i:6">n</span><span style="--i:7">d</span><span style="--i:8">r</span><span style="--i:9">i</span><span style="--i:10">y</span><span style="--i:11">a</span><span style="--i:12">n</span><span class="dot" style="--i:13">.</span>
 				</div>
 			</div>
 		</footer>
@@ -460,6 +311,110 @@ const year = new Date().getFullYear();
 					setTheme(btn.dataset.theme || "system");
 				});
 			});
+		</script>
+
+		<script is:inline>
+			// Portfolio chrome: hamburger overlay, footer signoff, live clock
+			(function () {
+				var menuBtn = document.querySelector(".pf-menu-btn");
+				var menuEl = document.getElementById("site-menu");
+				if (menuBtn && menuEl) {
+					var menuOpen = false;
+					var lastY = window.scrollY;
+					var mobileMq = window.matchMedia("(max-width: 640px)");
+					var fine = window.matchMedia("(pointer: fine)").matches;
+					var reduce = window.matchMedia(
+						"(prefers-reduced-motion: reduce)",
+					).matches;
+					var onScrollMenu = function () {
+						var y = window.scrollY;
+						document.body.classList.toggle("scrolled", y > 100);
+						if (mobileMq.matches && !menuOpen) {
+							if (y > 140 && y > lastY + 4)
+								document.body.classList.add("menu-hidden");
+							else if (y < lastY - 4 || y <= 140)
+								document.body.classList.remove("menu-hidden");
+						}
+						lastY = y;
+					};
+					window.addEventListener("scroll", onScrollMenu, { passive: true });
+					onScrollMenu();
+					var setMenu = function (open) {
+						menuOpen = open;
+						if (open) document.body.classList.remove("menu-hidden");
+						document.body.classList.toggle("menu-open", open);
+						menuBtn.setAttribute("aria-expanded", String(open));
+						menuBtn.setAttribute(
+							"aria-label",
+							open ? "Close menu" : "Open menu",
+						);
+						menuEl.setAttribute("aria-hidden", String(!open));
+					};
+					menuBtn.addEventListener("click", function () {
+						setMenu(!menuOpen);
+					});
+					menuEl.querySelectorAll("a").forEach(function (a) {
+						a.addEventListener("click", function () {
+							setMenu(false);
+						});
+					});
+					window.addEventListener("keydown", function (e) {
+						if (e.key === "Escape" && menuOpen) setMenu(false);
+					});
+					if (fine && !reduce) {
+						var inner = menuBtn.querySelector(".pf-menu-btn-inner");
+						menuBtn.addEventListener("mousemove", function (e) {
+							var r = menuBtn.getBoundingClientRect();
+							var x = (e.clientX - r.left - r.width / 2) * 0.3;
+							var y = (e.clientY - r.top - r.height / 2) * 0.3;
+							inner.style.transform =
+								"translate(" + x + "px," + y + "px)";
+						});
+						menuBtn.addEventListener("mouseleave", function () {
+							inner.style.transform = "";
+						});
+					}
+				}
+
+				var signoff = document.querySelector(".pf-signoff");
+				if (signoff) {
+					var reduceMotion = window.matchMedia(
+						"(prefers-reduced-motion: reduce)",
+					).matches;
+					if ("IntersectionObserver" in window && !reduceMotion) {
+						var so = new IntersectionObserver(
+							function (es) {
+								es.forEach(function (e) {
+									if (e.isIntersecting) {
+										signoff.classList.add("in");
+										so.disconnect();
+									}
+								});
+							},
+							{ threshold: 0.2 },
+						);
+						so.observe(signoff);
+					} else {
+						signoff.classList.add("in");
+					}
+				}
+
+				var clock = document.querySelector(".pf-clock");
+				if (clock) {
+					var tick = function () {
+						try {
+							var t = new Date().toLocaleTimeString("en-GB", {
+								hour: "2-digit",
+								minute: "2-digit",
+								timeZone: "Asia/Makassar",
+							});
+							clock.textContent = "Indonesia (GMT+8) \u00b7 " + t;
+						} catch (err) {}
+					};
+					tick();
+					setInterval(tick, 30000);
+				}
+			})();
 		</script>
 
 		<style is:global>
