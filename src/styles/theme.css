@@ -31,11 +31,28 @@
 */
 
 :root {
-	--color-brand: light-dark(#1b3fe0, #6e8cff);
-	--color-brand-hover: light-dark(#1532b8, #8aa4ff);
+	/*
+	 * Light values are the approved portfolio theme (cream/ink/blue,
+	 * Fraunces). Dark values re-tune every token to the same palette:
+	 * deep navy canvas, navy surfaces and borders, cream text, and the
+	 * portfolio's light-blue accent (#8aa4ff) instead of neutral grays,
+	 * so dark mode reads as the portfolio at night, not a generic theme.
+	 */
+	--color-brand: light-dark(#1b3fe0, #8aa4ff);
+	--color-brand-hover: light-dark(#1532b8, #a5b8ff);
 	--color-on-brand: light-dark(#ffffff, #0e1a30);
-	--color-bg: light-dark(#f2efe9, #0e1a30);
+	--color-bg: light-dark(#f2efe9, #0b1424);
+	--color-surface: light-dark(#ffffff, #132141);
+	--color-fill: light-dark(#f2f2f2, #1a2a4d);
+	--color-fill-strong: light-dark(#e8e8e8, #223559);
 	--color-text: light-dark(#0e1a30, #f2efe9);
+	--color-text-secondary: light-dark(#525252, #aab6d4);
+	--color-muted: light-dark(#6b6b6b, #8fa0c4);
+	--color-border: light-dark(#e5e5e5, #26395f);
+	--color-border-subtle: light-dark(#efefef, #1c2c4a);
+	--color-border-strong: light-dark(#d4d4d4, #33487a);
+	--color-shadow: light-dark(rgb(0 0 0 / 0.06), rgb(2 6 18 / 0.5));
+	--color-shadow-strong: light-dark(rgb(0 0 0 / 0.12), rgb(2 6 18 / 0.65));
 	--font-heading: var(--font-serif), Georgia, serif;
 	--font-weight-heading: 800;
 	--font-weight-display: 800;

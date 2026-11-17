@@ -48,6 +48,19 @@ const { title, description } = Astro.props;
 		<link rel="apple-touch-icon" href="/favicon-180.png" />
 		<Font cssVariable="--font-body" preload />
 		<Font cssVariable="--font-serif" preload />
+		<script is:inline>
+			// Match the blog: apply an explicit theme choice (cookie) to prevent flash.
+			// With no cookie, color-scheme: light dark follows the OS.
+			(function () {
+				var row = document.cookie.split("; ").find(function (item) {
+					return item.startsWith("theme=");
+				});
+				var theme = row ? row.slice(6) : null;
+				if (theme === "dark" || theme === "light") {
+					document.documentElement.classList.add(theme);
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<slot />
